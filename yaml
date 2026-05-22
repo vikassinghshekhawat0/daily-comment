@@ -1,0 +1,22 @@
+name: Freedcamp Daily Comment
+
+on:
+  schedule:
+    - cron: '30 12 * * 1-5'   # 6 PM IST (12:30 UTC), Mon–Fri only
+  workflow_dispatch:            # manual trigger for testing
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate hash and post comment
+        run: |
+          API_KEY="${{ secrets.FREEDCAMP_API_KEY }}"
+          API_SECRET="${{ secrets.FREEDCAMP_API_SECRET }}"
+          TASK_ID="${{ secrets.FREEDCAMP_TASK_ID }}"
+          TIMESTAMP=$(date +%s)
+          HASH=$(echo -n "${API_KEY}${TIMESTAMP}" | openssl dgst -sha1 -hmac "${API_SECRET}" | awk '{print $2}')
+
+          curl -X POST "https://freedcamp.com/api/v1/comments?api_key=${API_KEY}&timestamp=${TIMESTAMP}&hash=${HASH}" \
+            -H "Content-Type: application/json" \
+            -d "{\"item_id\": \"${TASK_ID}\", \"app_id\": \"2\", \"description\": \"Daily update — all clear.\"}"
