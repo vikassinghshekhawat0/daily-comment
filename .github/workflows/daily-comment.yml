@@ -19,4 +19,4 @@ jobs:
 
           curl -X POST "https://freedcamp.com/api/v1/comments?api_key=${API_KEY}&timestamp=${TIMESTAMP}&hash=${HASH}" \
             -H "Content-Type: application/json" \
-            -d "{\"item_id\": \"${TASK_ID}\", \"app_id\": \"2\", \"description\": \"CSM.\"}"
+            -d "{\"item_id\": \"${TASK_ID}\", \"app_id\": \"2\", \"description\": \"UI Builder, ITAM, Practice.\"}"
